@@ -7,11 +7,11 @@
 describe('Backbone.Events', function(){
   it('fire callback if triggered', function(){
     var counter = 0;
-    var obj = new Backbone.Events();
-    obj.on('event', function(){
+    var evt = new Backbone.Events();
+    evt.on('event', function(){
       counter += 1;
     });
-    obj.trigger('event');
+    evt.trigger('event');
     expect(counter).to.equal(1);
   });
 
@@ -24,5 +24,23 @@ describe('Backbone.Events', function(){
     obj.trigger('event');
     expect(obj.counter).to.equal(1);
   });
+
+  it('can bindable and triggable multiple events', function(){
+    var counter = 0;
+    var evt = new Backbone.Events();
+    evt.on('a b c', function(){
+      counter += 1;
+    });
+
+    evt.trigger('a');
+    expect(counter).to.equal(1);
+
+    evt.trigger('a b');
+    expect(counter).to.equal(3);
+
+    evt.trigger('c');
+    expect(counter).to.equal(4);
+
+  }); 
 });
 

@@ -22,11 +22,52 @@ module Backbone {
     }
   }
 
-  class EventList {
-    events : Event[] = [];
+  class EventName {
+    
+    private components : string[] = [];
 
-    private get(name : string) : Event {
+    constructor(name : string) {
+      this.components = EventName.parseName(name);
+    }
+
+    private static parseName(name : string) : string[] {
+      return name.split(/\s+/);
+    }
+
+    scan(callback : (element : any)=>any) : void {
+      _.each(this.components, callback);
+    }
+
+  }
+
+  class FireableEventList {
+    private events : Event[] = [];
+
+    constructor(table : EventTable, eventName : EventName) {
+      var that = this;
+      eventName.scan(function(aName){
+        if (table.has(aName)) {
+          that.events.push(table.get(aName));
+        }
+      });
+    }
+
+    fire() : void {
+      _.each(this.events, function(event : Event){
+        event.fire();
+      });
+    }
+  }
+
+  class EventTable {
+    events : {} = {};
+
+    get(name : string) : Event {
       return this.events[name];
+    }
+
+    has(name : string) : bool {
+      return this.get(name)? true : false;
     }
 
     private createEvent(name : string, callback : Function) : void {
@@ -39,38 +80,48 @@ module Backbone {
       this.get(name).addCallback(callback);
     }
 
-    register(name : string, callback : Function) : void {
-      if (this.has(name)) {
-        this.registerCallback(name, callback);
-      }
-      else {
-        this.createEvent(name, callback);
-      }
-    } 
-
-    has(name : string) : bool {
-      return this.get(name)? true : false;
+    private fireables(eventName : EventName) : FireableEventList {
+      return new FireableEventList(this, eventName);
     }
 
-    fire(name : string) : void {
-      this.get(name).fire();
+
+    /*
+     * Interface for Backbone.Events
+     */
+    register(eventName : EventName, callback : Function) : void {
+      // plz refactor
+      var that = this;
+      eventName.scan(function(aName){
+        if (that.has(aName)) {
+          that.registerCallback(aName, callback);
+        }
+        else {
+          that.createEvent(aName, callback);
+        }
+      });
+    }
+
+    fire(eventName : EventName) : void {
+      this.fireables(eventName).fire();
     }
   }
+
+
 
   /*
    *  Backbone.Events
    */
   export class Events {
 
-    eventList : EventList = new EventList();
+    eventTable : EventTable = new EventTable();
 
     on(name: string, callback: Function) : Events {
-      this.eventList.register(name, callback);
+      this.eventTable.register(new EventName(name), callback);
       return this;
     }
 
     trigger(name: string) : Events {
-      this.eventList.fire(name);
+      this.eventTable.fire(new EventName(name));
       return this;
     }
   }
