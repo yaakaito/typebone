@@ -5,7 +5,7 @@
 
 
 describe('Backbone.Events', function(){
-  it('can fire `on` callback if triggered', function(){
+  it('fire callback if triggered', function(){
     var counter = 0;
     var obj = new Backbone.Events();
     obj.on('event', function(){
