@@ -1,3 +1,5 @@
+/// <reference path="../vendor/underscore.d.ts" />
+
 module Backbone {
   export class Events {
 
@@ -18,9 +20,9 @@ module Backbone {
 
       var theEvents = this.events[name];
 
-      for (var i = 0; i < theEvents.length; i++) {
-        theEvents[i]();
-      }
+      _.each(theEvents, function(callback: Function) {
+        callback();
+      });
 
       return this;
     }
