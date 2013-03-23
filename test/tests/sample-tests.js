@@ -1,11 +1,11 @@
 describe('Sample', function(){
   var a;
   beforeEach(function(){
-    a = new A();
+    a = new Backbone.Model();
   });
 
   it('YES', function(){
-    chai.expect(a.method(true)).to.equals('YES');
+    
   })
 });
 
