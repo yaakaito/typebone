@@ -1,9 +1,11 @@
 compile:
 	tsc --out backbone.js src/backbone.ts
 
-watch:
-	tsc --out backbone.js src/backbone.ts --watch
+compile-test:
+	tsc test/*.ts
+	cat test/*.js > all-tests.js
+	rm test/*.js
 
-cover: compile
+cover: compile compile-test
 	jscoverage backbone.js backbone.cover.js
 	mocha-phantomjs -R json-cov cover-runner.html | json2htmlcov > cover.html
