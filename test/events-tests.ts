@@ -13,6 +13,11 @@ describe('Backbone.Events', function(){
     });
     evt.trigger('event');
     expect(counter).to.equal(1);
+    evt.trigger('event');
+    evt.trigger('event');
+    evt.trigger('event');
+    evt.trigger('event');
+    expect(counter).to.equal(5);
   });
 
   it('can extendable', function(){
