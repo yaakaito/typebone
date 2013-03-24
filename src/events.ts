@@ -22,6 +22,7 @@ module Backbone {
     }
   }
 
+  // Multiple event name.
   class EventName {
     
     private components : string[] = [];
@@ -70,6 +71,7 @@ module Backbone {
       return this.get(name)? true : false;
     }
 
+    // TODO: define callback function type literals
     private createEvent(name : string, callback : Function) : void {
       var theEvent = new Event(name);
       theEvent.addCallback(callback);
@@ -84,12 +86,9 @@ module Backbone {
       return new FireableEventList(this, eventName);
     }
 
-
-    /*
-     * Interface for Backbone.Events
-     */
+    // Interface for Backbone.Events
     register(eventName : EventName, callback : Function) : void {
-      // plz refactor
+      // TODO: refactor
       var that = this;
       eventName.scan(function(aName){
         if (that.has(aName)) {
@@ -105,8 +104,6 @@ module Backbone {
       this.fireables(eventName).fire();
     }
   }
-
-
 
   /*
    *  Backbone.Events
