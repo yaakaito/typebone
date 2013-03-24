@@ -5,15 +5,9 @@
 
 
 describe('Backbone.Events', function(){
-  var obj : {
-    counter : number;
-    on : Function;
-    off : Function;
-    trigger : Function;
-  };
 
-  beforeEach(function() {
-
+  it('fire callback if triggered', function(){
+    var obj : { counter : number; on : Function; off : Function; trigger : Function; };
     obj = {
       counter : 0,
       on : null,
@@ -21,9 +15,6 @@ describe('Backbone.Events', function(){
       trigger : null,
     };
     _.extend(obj, Backbone.Events);
-  });
-
-  it('fire callback if triggered', function(){
 
     obj.on('event', function(){
       obj.counter += 1;
@@ -43,6 +34,14 @@ describe('Backbone.Events', function(){
   });
 
   it('can binding and triggering multiple events', function(){
+    var obj : { counter : number; on : Function; off : Function; trigger : Function; };
+    obj = {
+      counter : 0,
+      on : null,
+      off : null,
+      trigger : null,
+    };
+    _.extend(obj, Backbone.Events);
 
     obj.on('a b c', function(){
       obj.counter += 1;
@@ -64,8 +63,16 @@ describe('Backbone.Events', function(){
   });
 
   it('can binding and triggering with event map', function(){
+    var obj : { counter : number; on : Function; off : Function; trigger : Function; };
+    obj = {
+      counter : 0,
+      on : null,
+      off : null,
+      trigger : null,
+    };
+    _.extend(obj, Backbone.Events);
 
-    var incement = function() : any {
+    var incement = function(evt) : any {
       this.counter += 1;
     };
 
@@ -94,6 +101,15 @@ describe('Backbone.Events', function(){
   });
 
   it('fire `all` callback if triggered any events', function() {
+    var obj : { counter : number; on : Function; off : Function; trigger : Function; };
+    obj = {
+      counter : 0,
+      on : null,
+      off : null,
+      trigger : null,
+    };
+    _.extend(obj, Backbone.Events);
+
     var a = false, b = false;
     obj.on('all', function(evt) {
       obj.counter += 1;
