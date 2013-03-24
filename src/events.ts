@@ -21,9 +21,6 @@ module Backbone {
     eventTable : null,
 
     on : function(events : any, callback : any, context? : any) {
-      if (!this.eventTable) {
-        this.eventTable = new EventTable();
-      }
 
       if (typeof events == "string") {
         this.eventTable.register(new MultipleEventName(events), callback, context);        
@@ -229,5 +226,7 @@ module Backbone {
       });
     }
   }
+
+  Events.eventTable = new EventTable();
 
 }
