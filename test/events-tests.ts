@@ -5,94 +5,90 @@
 
 
 describe('Backbone.Events', function(){
-  it('fire callback if triggered', function(){
-    var counter = 0;
-    var evt = new Backbone.Events();
-    evt.on('event', function(){
-      counter += 1;
-    });
-    evt.trigger('event');
-    expect(counter).to.equal(1);
-    evt.trigger('event');
-    evt.trigger('event');
-    evt.trigger('event');
-    evt.trigger('event');
-    expect(counter).to.equal(5);
+  var obj : {
+    counter : number;
+    on : Function;
+    off : Function;
+    trigger : Function;
+  };
 
-    evt.off('event');
-    evt.trigger('event');
-    expect(counter).to.equal(5);
+  beforeEach(function() {
 
-  });
-
-  it('can extendable', function(){
-    var obj : {
-      counter : number;
-      on : Function;
-      trigger : Function;
-    };
     obj = {
       counter : 0,
       on : null,
-      trigger : null
+      off : null,
+      trigger : null,
     };
-    _.extend(obj, new Backbone.Events()); // :(
-    obj.on('event', function() {
+    _.extend(obj, Backbone.Events); // :(
+  });
+
+  it('fire callback if triggered', function(){
+
+    obj.on('event', function(){
       obj.counter += 1;
     });
     obj.trigger('event');
     expect(obj.counter).to.equal(1);
+    obj.trigger('event');
+    obj.trigger('event');
+    obj.trigger('event');
+    obj.trigger('event');
+    expect(obj.counter).to.equal(5);
+
+    obj.off('event');
+    obj.trigger('event');
+    expect(obj.counter).to.equal(5);
+
   });
 
   it('can binding and triggering multiple events', function(){
-    var counter = 0;
-    var evt = new Backbone.Events();
-    evt.on('a b c', function(){
-      counter += 1;
+
+    obj.on('a b c', function(){
+      obj.counter += 1;
     });
 
-    evt.trigger('a');
-    expect(counter).to.equal(1);
+    obj.trigger('a');
+    expect(obj.counter).to.equal(1);
 
-    evt.trigger('a b');
-    expect(counter).to.equal(3);
+    obj.trigger('a b');
+    expect(obj.counter).to.equal(3);
 
-    evt.trigger('c');
-    expect(counter).to.equal(4);
+    obj.trigger('c');
+    expect(obj.counter).to.equal(4);
 
-    evt.off('a b');
-    evt.trigger('a b c');
-    expect(counter).to.equal(5);
+    obj.off('a b');
+    obj.trigger('a b c');
+    expect(obj.counter).to.equal(5);
 
   });
 
   it('can binding and triggering with event map', function(){
-    var counter = 0;
-    var evt = new Backbone.Events();
+
     function incement() : void {
-      counter += 1;
+      obj.counter += 1;
     }
-    evt.on({
+    obj.on({
       a : incement,
       b : incement,
       c : incement
-    }, evt);
+    }, obj);
 
-    evt.trigger('a');
-    expect(counter).to.equal(1);
+    obj.trigger('a');
+    expect(obj.counter).to.equal(1);
 
-    evt.trigger('a b');
-    expect(counter).to.equal(3);
+    obj.trigger('a b');
+    expect(obj.counter).to.equal(3);
 
-    evt.trigger('c');
-    expect(counter).to.equal(4);
+    obj.trigger('c');
+    expect(obj.counter).to.equal(4);
 
-    evt.off({
+    obj.off({
       a : incement,
       c : incement
-    }, evt);
-    evt.trigger('a b c');
-    expect(counter).to.equal(5);
+    }, obj);
+    obj.trigger('a b c');
+    expect(obj.counter).to.equal(5);
 
   });
 });

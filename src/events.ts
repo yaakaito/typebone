@@ -132,13 +132,22 @@ module Backbone {
   /*
    *  Backbone.Events
    */
-  export class Events {
+  export var Events : {
+    eventTable : EventTable;
 
-    eventTable : EventTable = new EventTable();
+    on(name : string, callback : Function) : any;
+    on(map : any, context : any) : any;
+  
+    off(name : string, callback? : Function) : any;
+    off(map : any, context : any) : any;
 
-    on(name : string, callback : Function) : Events;
-    on(map : any, context : Events) : Events;
-    on(map : any, callback : any) : Events {
+    trigger(name : string) : any;
+  };
+
+  Events = {
+    eventTable : new EventTable(),
+
+    on : function(map : any, callback : any) {
       if (typeof map == "string") {
         this.eventTable.register(new EventName(map), callback);        
       }
@@ -149,11 +158,9 @@ module Backbone {
         });
       }
       return this;
-    }
+    },
 
-    off(name : string, callback? : Function) : Events;
-    off(map : any, context : Events) : Events;
-    off(map : any, callback? : any) : Events {
+    off : function(map : any, callback? : any) {
       if (typeof map == "string") {
         this.eventTable.unregister(new EventName(map), callback);
       }
@@ -164,11 +171,11 @@ module Backbone {
         });
       }
       return this;
-    }
+    },
 
-    trigger(name : string) : Events {
+    trigger : function(name : string) {
       this.eventTable.fire(new EventName(name));
       return this;
     }
-  }
+  };
 }
