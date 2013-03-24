@@ -112,12 +112,22 @@ module Backbone {
 
     eventTable : EventTable = new EventTable();
 
-    on(name: string, callback: Function) : Events {
-      this.eventTable.register(new EventName(name), callback);
+    on(name : string, callback : Function) : Events;
+    on(map : any, context : Events) : Events;
+    on(map : any, callback : any) : Events {
+      if (typeof map == "string") {
+        this.eventTable.register(new EventName(map), callback);        
+      }
+      else {
+        var that = this;
+        _.each(<Object>map, function(aCallback: Function, aName?: string){
+          that.on(aName, aCallback);
+        });
+      }
       return this;
     }
 
-    trigger(name: string) : Events {
+    trigger(name : string) : Events {
       this.eventTable.fire(new EventName(name));
       return this;
     }

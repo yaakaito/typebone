@@ -57,5 +57,28 @@ describe('Backbone.Events', function(){
 
   });
 
+  it('can binding and triggering with event map', function(){
+    var counter = 0;
+    var evt = new Backbone.Events();
+    function incement() : void {
+      counter += 1;
+    }
+    evt.on({
+      a : incement,
+      b : incement,
+      c : incement
+    }, evt);
+
+    evt.trigger('a');
+    expect(counter).to.equal(1);
+
+    evt.trigger('a b');
+    expect(counter).to.equal(3);
+
+    evt.trigger('c');
+    expect(counter).to.equal(4);
+
+
+  });
 });
 
