@@ -191,10 +191,6 @@ module Backbone {
       }    
     }
 
-    private fireables(eventName : MultipleEventName) : FireableEventList {
-      return
-    }
-
     // Interface for Backbone.Events
     register(eventName : MultipleEventName, callback : Function, context: any) : void {
       // TODO: refactor
