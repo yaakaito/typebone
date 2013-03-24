@@ -1,2 +1,2 @@
-/// <reference path="event.ts" />
+/// <reference path="events.ts" />
 /// <reference path="model.ts" />
