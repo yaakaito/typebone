@@ -2,29 +2,112 @@
 
 module Backbone {
 
+  /*
+   *  Backbone.Events
+   */
+  export var Events : {
+    eventTable : EventTable;
+
+    on(name : string, callback : Function, context : any) : any;
+    on(map : any, context : any) : any;
+  
+    off(name : string, callback? : Function, context? : any) : any;
+    off(map : any, context : any) : any;
+
+    trigger(name : string) : any;
+  };
+
+  Events = {
+    eventTable : null,
+
+    on : function(events : any, callback : any, context? : any) {
+      if (!this.eventTable) {
+        this.eventTable = new EventTable();
+      }
+
+      if (typeof events == "string") {
+        this.eventTable.register(new EventName(events), callback, context);        
+      }
+      else {
+        var that = this;
+        _.each(<Object>events, function(aCallback: Function, aName?: string){
+          that.on(aName, aCallback, callback);
+        });
+      }
+      return this;
+    },
+
+    off : function(map : any, callback? : any, context? : any) {
+      if (typeof map == "string") {
+        this.eventTable.unregister(new EventName(map), callback, context);
+      }
+      else {
+        var that = this;
+        _.each(<Object>map, function(aCallback : Function, aName? : string){
+          that.off(aName, aCallback, callback);
+        });
+      }
+      return this;
+    },
+
+    trigger : function(name : string) {
+      this.eventTable.fire(new EventName(name));
+      return this;
+    }
+  };
+
+  /*
+   * Inner modules.
+   */
+
   class Event {
     
-    callbacks : Function[] = [];
+    callbacks : EventCallback[] = [];
     name : string;
 
     constructor(name : string) {
       this.name = name;
     }
 
-    addCallback(callback : Function) {
+    addCallback(callback : EventCallback) {
       this.callbacks.push(callback);
     }
 
-    removeCallback(callback : Function) {
-      this.callbacks = _.reject(this.callbacks, function(aCallback : Function){
-        return aCallback == callback;
+    removeCallback(callback : EventCallback) {
+      this.callbacks = _.reject(this.callbacks, function(aCallback : EventCallback){
+        return callback.equals(aCallback);
       });
     }
 
     fire() : void {
-      _.each(this.callbacks, function(callback : Function){
-        callback();
+      _.each(this.callbacks, function(callback : EventCallback){
+        callback.fire();
       });
+    }
+  }
+
+  class EventCallback {
+
+    real : Function;
+    context: any = null;
+
+    constructor(real : Function, context? : any) {
+      this.real = real;
+      this.context = context;
+    }
+
+    fire() : void {
+      this.real.apply(this.context || Events);
+    }
+
+    equals(right : EventCallback) : bool {
+
+      if (right.context != undefined) {
+        return this.real == right.real && this.context == right.context;
+      }
+      else {
+        return this.real == right.real;
+      }
     }
   }
 
@@ -78,22 +161,22 @@ module Backbone {
     }
 
     // TODO: define callback function type literals
-    private createEvent(name : string, callback : Function) : void {
+    private createEvent(name : string, callback : Function, context : any) : void {
       var theEvent = new Event(name);
-      theEvent.addCallback(callback);
+      theEvent.addCallback(new EventCallback(callback, context));
       this.events[name] = theEvent;
     }
 
-    private registerCallback(name : string, callback : Function) : void {
-      this.get(name).addCallback(callback);
+    private registerCallback(name : string, callback : Function, context : any) : void {
+      this.get(name).addCallback(new EventCallback(callback, context));
     }
 
-    private unregisterEvent(name : string, callback : Function) : void {
+    private unregisterEvent(name : string, callback : Function, context: any) : void {
       if (callback === undefined) {
         this.events[name] = null;
       }
       else {
-        this.get(name).removeCallback(callback);
+        this.get(name).removeCallback(new EventCallback(callback, context));
       }    
     }
 
@@ -102,24 +185,24 @@ module Backbone {
     }
 
     // Interface for Backbone.Events
-    register(eventName : EventName, callback : Function) : void {
+    register(eventName : EventName, callback : Function, context: any) : void {
       // TODO: refactor
       var that = this;
       eventName.scan(function(aName : string){
         if (that.has(aName)) {
-          that.registerCallback(aName, callback);
+          that.registerCallback(aName, callback, context);
         }
         else {
-          that.createEvent(aName, callback);
+          that.createEvent(aName, callback, context);
         }
       });
     }
 
-    unregister(eventName : EventName, callback : Function) : void {
+    unregister(eventName : EventName, callback : Function, context : any) : void {
       var that = this;
       eventName.scan(function(aName : string){
         if (that.has(aName)) {
-          that.unregisterEvent(aName, callback);
+          that.unregisterEvent(aName, callback, context);
         }
       }); 
     }
@@ -129,53 +212,4 @@ module Backbone {
     }
   }
 
-  /*
-   *  Backbone.Events
-   */
-  export var Events : {
-    eventTable : EventTable;
-
-    on(name : string, callback : Function) : any;
-    on(map : any, context : any) : any;
-  
-    off(name : string, callback? : Function) : any;
-    off(map : any, context : any) : any;
-
-    trigger(name : string) : any;
-  };
-
-  Events = {
-    eventTable : new EventTable(),
-
-    on : function(map : any, callback : any) {
-      if (typeof map == "string") {
-        this.eventTable.register(new EventName(map), callback);        
-      }
-      else {
-        var that = this;
-        _.each(<Object>map, function(aCallback: Function, aName?: string){
-          that.on(aName, aCallback);
-        });
-      }
-      return this;
-    },
-
-    off : function(map : any, callback? : any) {
-      if (typeof map == "string") {
-        this.eventTable.unregister(new EventName(map), callback);
-      }
-      else {
-        var that = this;
-        _.each(<Object>map, function(aCallback : Function, aName? : string){
-          that.off(aName, aCallback);
-        });
-      }
-      return this;
-    },
-
-    trigger : function(name : string) {
-      this.eventTable.fire(new EventName(name));
-      return this;
-    }
-  };
 }

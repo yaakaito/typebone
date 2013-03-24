@@ -20,7 +20,7 @@ describe('Backbone.Events', function(){
       off : null,
       trigger : null,
     };
-    _.extend(obj, Backbone.Events); // :(
+    _.extend(obj, Backbone.Events);
   });
 
   it('fire callback if triggered', function(){
@@ -65,9 +65,10 @@ describe('Backbone.Events', function(){
 
   it('can binding and triggering with event map', function(){
 
-    function incement() : void {
-      obj.counter += 1;
-    }
+    var incement = function() : any {
+      this.counter += 1;
+    };
+
     obj.on({
       a : incement,
       b : incement,
