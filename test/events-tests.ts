@@ -92,5 +92,22 @@ describe('Backbone.Events', function(){
     expect(obj.counter).to.equal(5);
 
   });
+
+  it('fire `all` callback if triggered any events', function() {
+    var a = false, b = false;
+    obj.on('all', function(evt) {
+      obj.counter += 1;
+      if (evt == 'a') {
+        a = true;
+      }
+
+      if (evt == 'b') {
+        b = true;
+      }
+    }).trigger('a b');
+    expect(a).to.be.true;
+    expect(b).to.be.true;
+    expect(obj.counter).to.equal(2);
+  });
 });
 

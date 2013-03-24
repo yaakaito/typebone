@@ -79,9 +79,9 @@ module Backbone {
       });
     }
 
-    fire() : void {
+    fire(e : string) : void {
       _.each(this.callbacks, function(callback : EventCallback){
-        callback.fire();
+        callback.fire(e);
       });
     }
   }
@@ -96,8 +96,8 @@ module Backbone {
       this.context = context;
     }
 
-    fire() : void {
-      this.real.apply(this.context || Events);
+    fire(e) : void {
+      this.real.apply(this.context || Events, [e]);
     }
 
     equals(right : EventCallback) : bool {
@@ -132,25 +132,32 @@ module Backbone {
 
   class FireableEventList {
     private events : Event[] = [];
+    private name : string = null;
 
-    constructor(table : EventTable, eventName : EventName) {
-      var that = this;
-      eventName.scan(function(aName){
-        if (table.has(aName)) {
-          that.events.push(table.get(aName));
-        }
-      });
+    constructor(table : EventTable, name : string) {
+      if (table.has(name)) {
+        this.events.push(table.get(name));
+      }
+      
+      var all = table.all();
+      if (all) {
+        this.events.push(all);
+      }
+
+      this.name = name;
     }
 
     fire() : void {
+      var name = this.name;
       _.each(this.events, function(event : Event){
-        event.fire();
+        event.fire(name);
       });
     }
   }
 
   class EventTable {
-    events : {} = {};
+
+    private events : {} = {};
 
     get(name : string) : Event {
       return this.events[name];
@@ -158,6 +165,13 @@ module Backbone {
 
     has(name : string) : bool {
       return this.get(name) ? true : false;
+    }
+
+    all() : Event {
+      if (this.has('all')) {
+        return this.get('all');
+      }
+      return null;
     }
 
     // TODO: define callback function type literals
@@ -181,7 +195,7 @@ module Backbone {
     }
 
     private fireables(eventName : EventName) : FireableEventList {
-      return new FireableEventList(this, eventName);
+      return
     }
 
     // Interface for Backbone.Events
@@ -208,7 +222,11 @@ module Backbone {
     }
 
     fire(eventName : EventName) : void {
-      this.fireables(eventName).fire();
+      var that = this;
+      eventName.scan(function(aName : string){
+         var fireables = new FireableEventList(that, aName);
+         fireables.fire();
+      });
     }
   }
 
