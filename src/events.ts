@@ -26,7 +26,7 @@ module Backbone {
       }
 
       if (typeof events == "string") {
-        this.eventTable.register(new EventName(events), callback, context);        
+        this.eventTable.register(new MultipleEventName(events), callback, context);        
       }
       else {
         var that = this;
@@ -39,7 +39,7 @@ module Backbone {
 
     off : function(map : any, callback? : any, context? : any) {
       if (typeof map == "string") {
-        this.eventTable.unregister(new EventName(map), callback, context);
+        this.eventTable.unregister(new MultipleEventName(map), callback, context);
       }
       else {
         var that = this;
@@ -51,7 +51,7 @@ module Backbone {
     },
 
     trigger : function(name : string) {
-      this.eventTable.fire(new EventName(name));
+      this.eventTable.fire(new MultipleEventName(name));
       return this;
     }
   };
@@ -112,12 +112,12 @@ module Backbone {
   }
 
   // Multiple event name.
-  class EventName {
+  class MultipleEventName {
     
     private components : string[] = [];
 
     constructor(name : string) {
-      this.components = EventName.parseName(name);
+      this.components = MultipleEventName.parseName(name);
     }
 
     private static parseName(name : string) : string[] {
@@ -194,12 +194,12 @@ module Backbone {
       }    
     }
 
-    private fireables(eventName : EventName) : FireableEventList {
+    private fireables(eventName : MultipleEventName) : FireableEventList {
       return
     }
 
     // Interface for Backbone.Events
-    register(eventName : EventName, callback : Function, context: any) : void {
+    register(eventName : MultipleEventName, callback : Function, context: any) : void {
       // TODO: refactor
       var that = this;
       eventName.scan(function(aName : string){
@@ -212,7 +212,7 @@ module Backbone {
       });
     }
 
-    unregister(eventName : EventName, callback : Function, context : any) : void {
+    unregister(eventName : MultipleEventName, callback : Function, context : any) : void {
       var that = this;
       eventName.scan(function(aName : string){
         if (that.has(aName)) {
@@ -221,7 +221,7 @@ module Backbone {
       }); 
     }
 
-    fire(eventName : EventName) : void {
+    fire(eventName : MultipleEventName) : void {
       var that = this;
       eventName.scan(function(aName : string){
          var fireables = new FireableEventList(that, aName);
