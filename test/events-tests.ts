@@ -16,7 +16,16 @@ describe('Backbone.Events', function(){
   });
 
   it('can extendable', function(){
-    var obj = { counter: 0 }
+    var obj : {
+      counter : number;
+      on : Function;
+      trigger : Function;
+    };
+    obj = {
+      counter : 0,
+      on : null,
+      trigger : null
+    };
     _.extend(obj, new Backbone.Events()); // :(
     obj.on('event', function() {
       obj.counter += 1;
