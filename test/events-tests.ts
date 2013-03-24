@@ -39,7 +39,7 @@ describe('Backbone.Events', function(){
     expect(obj.counter).to.equal(1);
   });
 
-  it('can bindable and triggable multiple events', function(){
+  it('can binding and triggering multiple events', function(){
     var counter = 0;
     var evt = new Backbone.Events();
     evt.on('a b c', function(){
@@ -55,6 +55,7 @@ describe('Backbone.Events', function(){
     evt.trigger('c');
     expect(counter).to.equal(4);
 
-  }); 
+  });
+
 });
 
