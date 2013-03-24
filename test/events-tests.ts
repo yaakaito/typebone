@@ -87,6 +87,13 @@ describe('Backbone.Events', function(){
     evt.trigger('c');
     expect(counter).to.equal(4);
 
+    evt.off({
+      a : incement,
+      c : incement
+    }, evt);
+    evt.trigger('a b c');
+    expect(counter).to.equal(5);
+
   });
 });
 

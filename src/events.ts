@@ -151,8 +151,18 @@ module Backbone {
       return this;
     }
 
-    off(name : string, callback? : Function) : Events {
-      this.eventTable.unregister(new EventName(name), callback);
+    off(name : string, callback? : Function) : Events;
+    off(map : any, context : Events) : Events;
+    off(map : any, callback? : any) : Events {
+      if (typeof map == "string") {
+        this.eventTable.unregister(new EventName(map), callback);
+      }
+      else {
+        var that = this;
+        _.each(<Object>map, function(aCallback : Function, aName? : string){
+          that.off(aName, aCallback);
+        });
+      }
       return this;
     }
 
