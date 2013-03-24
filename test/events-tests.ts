@@ -18,6 +18,11 @@ describe('Backbone.Events', function(){
     evt.trigger('event');
     evt.trigger('event');
     expect(counter).to.equal(5);
+
+    evt.off('event');
+    evt.trigger('event');
+    expect(counter).to.equal(5);
+    
   });
 
   it('can extendable', function(){
@@ -77,7 +82,6 @@ describe('Backbone.Events', function(){
 
     evt.trigger('c');
     expect(counter).to.equal(4);
-
 
   });
 });

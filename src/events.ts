@@ -15,6 +15,12 @@ module Backbone {
       this.callbacks.push(callback);
     }
 
+    removeCallback(callback : Function) {
+      this.callbacks = _.reject(this.callbacks, function(aCallback : Function){
+        return aCallback == callback;
+      });
+    }
+
     fire() : void {
       _.each(this.callbacks, function(callback : Function){
         callback();
@@ -68,7 +74,7 @@ module Backbone {
     }
 
     has(name : string) : bool {
-      return this.get(name)? true : false;
+      return this.get(name) ? true : false;
     }
 
     // TODO: define callback function type literals
@@ -82,6 +88,15 @@ module Backbone {
       this.get(name).addCallback(callback);
     }
 
+    private unregisterEvent(name : string, callback : Function) : void {
+      if (callback === undefined) {
+        this.events[name] = null;
+      }
+      else {
+        this.get(name).removeCallback(callback);
+      }    
+    }
+
     private fireables(eventName : EventName) : FireableEventList {
       return new FireableEventList(this, eventName);
     }
@@ -90,7 +105,7 @@ module Backbone {
     register(eventName : EventName, callback : Function) : void {
       // TODO: refactor
       var that = this;
-      eventName.scan(function(aName){
+      eventName.scan(function(aName : string){
         if (that.has(aName)) {
           that.registerCallback(aName, callback);
         }
@@ -98,6 +113,15 @@ module Backbone {
           that.createEvent(aName, callback);
         }
       });
+    }
+
+    unregister(eventName : EventName, callback : Function) : void {
+      var that = this;
+      eventName.scan(function(aName : string){
+        if (that.has(aName)) {
+          that.unregisterEvent(aName, callback);
+        }
+      }); 
     }
 
     fire(eventName : EventName) : void {
@@ -124,6 +148,11 @@ module Backbone {
           that.on(aName, aCallback);
         });
       }
+      return this;
+    }
+
+    off(name : string, callback? : Function) : Events {
+      this.eventTable.unregister(new EventName(name), callback);
       return this;
     }
 
