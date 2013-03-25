@@ -176,22 +176,23 @@ module Backbone {
    *  Backbone.Events
    */
 
-  export var Events : {
-    eventTable : EventTable;
-
+  export interface BackboneEventsInterface {
     on(name : string, callback : Function, context : any) : any;
     on(map : any, context : any) : any;
-  
     off(name : string, callback? : Function, context? : any) : any;
     off(map : any, context : any) : any;
-
     trigger(name : string) : any;
-  };
+  }
 
-  Events = {
-    eventTable : null,
+  class BackboneEvents implements  BackboneEventsInterface {
+    private eventTable : EventTable;
 
-    on : function(events : any, callback : any, context? : any) {
+    constructor() {
+      this.eventTable = new EventTable();
+    }
+
+
+    on(events : any, callback : any, context? : any) : any {
 
       if (typeof events == "string") {
         this.eventTable.register(new MultipleEventName(events), callback, context);        
@@ -203,9 +204,10 @@ module Backbone {
         });
       }
       return this;
-    },
+    }
+  
 
-    off : function(map : any, callback? : any, context? : any) {
+    off(map : any, callback? : any, context? : any) : any {
       if (typeof map == "string") {
         this.eventTable.unregister(new MultipleEventName(map), callback, context);
       }
@@ -216,16 +218,16 @@ module Backbone {
         });
       }
       return this;
-    },
+    }
 
-    trigger : function(name : string) {
+    trigger(name : string) : any {
       this.eventTable.fire(new MultipleEventName(name));
       return this;
     }
   };
 
-  Events.eventTable = new EventTable();
-
+  export var Events : BackboneEventsInterface;
+  Events = new BackboneEvents();
 
 }
 /*
