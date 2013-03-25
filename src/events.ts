@@ -176,7 +176,7 @@ module Backbone {
    *  Backbone.Events
    */
 
-  export interface BackboneEventsInterface {
+  export interface Eventable {
     on(name : string, callback : Function, context : any) : any;
     on(map : any, context : any) : any;
     off(name : string, callback? : Function, context? : any) : any;
@@ -184,7 +184,7 @@ module Backbone {
     trigger(name : string) : any;
   }
 
-  class BackboneEvents implements  BackboneEventsInterface {
+  class BackboneEvents implements  Eventable {
     private eventTable : EventTable;
 
     constructor() {
@@ -226,7 +226,7 @@ module Backbone {
     }
   };
 
-  export var Events : BackboneEventsInterface;
+  export var Events : Eventable;
   Events = new BackboneEvents();
 
 }
