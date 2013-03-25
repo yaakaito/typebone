@@ -3,57 +3,6 @@
 module Backbone {
 
   /*
-   *  Backbone.Events
-   */
-  export var Events : {
-    eventTable : EventTable;
-
-    on(name : string, callback : Function, context : any) : any;
-    on(map : any, context : any) : any;
-  
-    off(name : string, callback? : Function, context? : any) : any;
-    off(map : any, context : any) : any;
-
-    trigger(name : string) : any;
-  };
-
-  Events = {
-    eventTable : null,
-
-    on : function(events : any, callback : any, context? : any) {
-
-      if (typeof events == "string") {
-        this.eventTable.register(new MultipleEventName(events), callback, context);        
-      }
-      else {
-        var that = this;
-        _.each(<Object>events, function(aCallback: Function, aName?: string){
-          that.on(aName, aCallback, callback);
-        });
-      }
-      return this;
-    },
-
-    off : function(map : any, callback? : any, context? : any) {
-      if (typeof map == "string") {
-        this.eventTable.unregister(new MultipleEventName(map), callback, context);
-      }
-      else {
-        var that = this;
-        _.each(<Object>map, function(aCallback : Function, aName? : string){
-          that.off(aName, aCallback, callback);
-        });
-      }
-      return this;
-    },
-
-    trigger : function(name : string) {
-      this.eventTable.fire(new MultipleEventName(name));
-      return this;
-    }
-  };
-
-  /*
    * Inner modules.
    */
 
@@ -223,6 +172,63 @@ module Backbone {
     }
   }
 
+  /*
+   *  Backbone.Events
+   */
+
+  export var Events : {
+    eventTable : EventTable;
+
+    on(name : string, callback : Function, context : any) : any;
+    on(map : any, context : any) : any;
+  
+    off(name : string, callback? : Function, context? : any) : any;
+    off(map : any, context : any) : any;
+
+    trigger(name : string) : any;
+  };
+
+  Events = {
+    eventTable : null,
+
+    on : function(events : any, callback : any, context? : any) {
+
+      if (typeof events == "string") {
+        this.eventTable.register(new MultipleEventName(events), callback, context);        
+      }
+      else {
+        var that = this;
+        _.each(<Object>events, function(aCallback: Function, aName?: string){
+          that.on(aName, aCallback, callback);
+        });
+      }
+      return this;
+    },
+
+    off : function(map : any, callback? : any, context? : any) {
+      if (typeof map == "string") {
+        this.eventTable.unregister(new MultipleEventName(map), callback, context);
+      }
+      else {
+        var that = this;
+        _.each(<Object>map, function(aCallback : Function, aName? : string){
+          that.off(aName, aCallback, callback);
+        });
+      }
+      return this;
+    },
+
+    trigger : function(name : string) {
+      this.eventTable.fire(new MultipleEventName(name));
+      return this;
+    }
+  };
+
   Events.eventTable = new EventTable();
 
+
 }
+/*
+module Backbone {
+  export var Events = Backbone.Event.Events;
+}*/
