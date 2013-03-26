@@ -2,10 +2,28 @@
 
 module Backbone {
   export class Model implements Eventable {
+
+    private attributes : Object;
+
+    constructor(attributes? : Object) {
+      var attributes = attributes || {};
+      attributes['id'] = attributes['id'] || -_.uniqueId();
+      this.attributes = attributes;
+    }
+
+    get(name : string) : any {
+      return this.attributes[name];
+    }
+
+    set(name : string, value : any) {
+      this.attributes[name] = value;
+    }
+
     /*
      * Eventable
      */
     private events = Backbone.Events;
+
     on(events : any, callback : any, context? : any) : any {
       this.events.on(events, callback, context);
       return this;
