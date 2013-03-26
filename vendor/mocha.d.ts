@@ -11,7 +11,11 @@ declare var describe: {
   only(testDescription: string, f: Function): any;
   skip(testDescription: string, f: Function): any;    
 };
- 
+
+declare var context: {
+  (testDescription: string, f?: Function): any;  
+}
+
 declare var it: {
   (testDescription: string, f?: Function, done?: Function): any;
   only(testDescription: string, f?: Function, done?: Function): any;
