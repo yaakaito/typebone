@@ -16,9 +16,12 @@ module Backbone {
     }
 
     set(name : string, value : any) {
-      this.attributes[name] = value;
-      this.trigger('change:' + name, this);
-      this.trigger('change', this);
+      if (this.attributes[name] !== value) {
+        this.attributes[name] = value;
+        var eventName = 'change:' + name;
+        this.trigger(eventName, this);
+        this.trigger('change', this);
+      }
     }
 
     /*

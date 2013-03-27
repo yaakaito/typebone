@@ -20,7 +20,6 @@ describe('Backbone.Model', function(){
     expect(counter).to.equal(3);
   });
 
-
   context('when create with attributes', function(){
     var model;
     beforeEach(function() {
@@ -47,6 +46,15 @@ describe('Backbone.Model', function(){
       expect(changed).to.be.true;
     });
 
+    it('should not be fire change event if attribute not changed', function(){
+      var changed = false;
+      model.on('change', function(){
+        changed = true;  
+      });
+      model.set('key', 'value');
+      expect(changed).to.be.false;
+    });
+
     it('should be fire change:{changed-value} event if attribute changed', function(){
       var changed = false;
       model.on('change:key', function(){
@@ -55,5 +63,15 @@ describe('Backbone.Model', function(){
       model.set('key', 'rewrited');
       expect(changed).to.be.true;
     });
+
+    it('should not be fire change:{changed-value} event if attribute not changed', function(){
+      var changed = false;
+      model.on('change:key', function(){
+        changed = true;  
+      });
+      model.set('key', 'value');
+      expect(changed).to.be.false;
+    });
+
   });
 });
