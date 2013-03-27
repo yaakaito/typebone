@@ -39,8 +39,8 @@ module Backbone {
       return this;
     }
 
-    trigger(name : string) : any {
-      this.events.trigger(name);
+    trigger(name : string, args? : any) : any {
+      this.events.trigger(name, args);
       return this;
     }
   }

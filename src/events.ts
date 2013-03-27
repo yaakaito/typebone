@@ -181,7 +181,7 @@ module Backbone {
     on(map : any, context : any) : any;
     off(name : string, callback? : Function, context? : any) : any;
     off(map : any, context : any) : any;
-    trigger(name : string) : any;
+    trigger(name : string, args? : any) : any;
   }
 
   class BackboneEvents implements  Eventable {
@@ -220,7 +220,7 @@ module Backbone {
       return this;
     }
 
-    trigger(name : string) : any {
+    trigger(name : string, args? : any) : any {
       this.eventTable.fire(new MultipleEventName(name));
       return this;
     }
