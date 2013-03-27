@@ -20,6 +20,7 @@ describe('Backbone.Model', function(){
     expect(counter).to.equal(3);
   });
 
+
   context('when create with attributes', function(){
     var model;
     beforeEach(function() {
@@ -35,6 +36,15 @@ describe('Backbone.Model', function(){
     it('should set attribute by set method', function(){
       model.set('key', 'rewrited');
       expect(model.get('key')).to.equal('rewrited');
+    });
+
+    it('should be fire change event if attribute changed', function(){
+      var changed = false;
+      model.on('change', function(){
+        changed = true;
+      });
+      model.set('key', 'rewrited');
+      expect(changed).to.be.true;
     });
   });
 });

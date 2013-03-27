@@ -1,3 +1,4 @@
 *.js
 !vendor/*.js
 cover.html
+*.js.map

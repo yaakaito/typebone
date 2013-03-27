@@ -17,6 +17,7 @@ module Backbone {
 
     set(name : string, value : any) {
       this.attributes[name] = value;
+      this.trigger('change', this);
     }
 
     /*
