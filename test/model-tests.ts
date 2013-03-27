@@ -46,5 +46,14 @@ describe('Backbone.Model', function(){
       model.set('key', 'rewrited');
       expect(changed).to.be.true;
     });
+
+    it('should be fire change:{changed-value} event if attribute changed', function(){
+      var changed = false;
+      model.on('change:key', function(){
+        changed = true;
+      });
+      model.set('key', 'rewrited');
+      expect(changed).to.be.true;
+    });
   });
 });
