@@ -24,6 +24,10 @@ module Backbone {
       }
     }
 
+    has(name : string) : bool {
+      return this.get(name) != null;
+    }
+
     /*
      * Eventable
      */

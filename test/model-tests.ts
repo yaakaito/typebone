@@ -37,6 +37,10 @@ describe('Backbone.Model', function(){
       expect(model.get('key')).to.equal('rewrited');
     });
 
+    it('should `has` retruns true if the property defined', function(){
+      expect(model.has('key')).to.be.true;
+    });
+
     it('should be fire change event if attribute changed', function(){
       var changed = false;
       model.on('change', function(){
