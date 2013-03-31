@@ -3,12 +3,12 @@
 /// <reference path="../vendor/chai.d.ts" />
 
 
-describe('Backbone.Model', function(){
+describe('Backbone.Model', () => {
 
-  it('has Evntable interface', function(){
+  it('has Evntable interface', () => {
     var model = new Backbone.Model();
     var counter = 0;
-    model.on('event', function(){
+    model.on('event', () => {
       counter += 1;
     });
     model.trigger('event');
@@ -20,58 +20,58 @@ describe('Backbone.Model', function(){
     expect(counter).to.equal(3);
   });
 
-  context('when create with attributes', function(){
+  context('when create with attributes', () => {
     var model;
-    beforeEach(function() {
+    beforeEach(() =>  {
       model = new Backbone.Model({
         'key' : 'value'  
       });
     });
 
-    it('should get attribute by get method', function(){
+    it('should get attribute by get method', () => {
       expect(model.get('key')).to.equal('value');
     });
 
-    it('should set attribute by set method', function(){
+    it('should set attribute by set method', () => {
       model.set('key', 'rewrited');
       expect(model.get('key')).to.equal('rewrited');
     });
 
-    it('should `has` retruns true if the property defined', function(){
+    it('should `has` retruns true if the property defined', () => {
       expect(model.has('key')).to.be.true;
       expect(model.has('undef')).to.be.false;
     });
 
-    it('should be fire change event if attribute changed', function(){
+    it('should be fire change event if attribute changed', () => {
       var changed = false;
-      model.on('change', function(){
+      model.on('change', () => {
         changed = true;
       });
       model.set('key', 'rewrited');
       expect(changed).to.be.true;
     });
 
-    it('should not be fire change event if attribute not changed', function(){
+    it('should not be fire change event if attribute not changed', () => {
       var changed = false;
-      model.on('change', function(){
+      model.on('change', () => {
         changed = true;  
       });
       model.set('key', 'value');
       expect(changed).to.be.false;
     });
 
-    it('should be fire change:{changed-value} event if attribute changed', function(){
+    it('should be fire change:{changed-value} event if attribute changed', () => {
       var changed = false;
-      model.on('change:key', function(){
+      model.on('change:key', () => {
         changed = true;
       });
       model.set('key', 'rewrited');
       expect(changed).to.be.true;
     });
 
-    it('should not be fire change:{changed-value} event if attribute not changed', function(){
+    it('should not be fire change:{changed-value} event if attribute not changed', () => {
       var changed = false;
-      model.on('change:key', function(){
+      model.on('change:key', () => {
         changed = true;  
       });
       model.set('key', 'value');

@@ -4,9 +4,9 @@
 /// <reference path="../vendor/underscore.d.ts" />
 
 
-describe('Backbone.Events', function(){
+describe('Backbone.Events', () => {
 
-  it('fire callback if triggered', function(){
+  it('fire callback if triggered', () => {
     var obj : { counter : number; on : Function; off : Function; trigger : Function; };
     obj = {
       counter : 0,
@@ -16,7 +16,7 @@ describe('Backbone.Events', function(){
     };
     _.extend(obj, Backbone.Events);
 
-    obj.on('event', function(){
+    obj.on('event', () => {
       obj.counter += 1;
     });
     obj.trigger('event');
@@ -33,7 +33,7 @@ describe('Backbone.Events', function(){
 
   });
 
-  it('can binding and triggering multiple events', function(){
+  it('can binding and triggering multiple events', () => {
     var obj : { counter : number; on : Function; off : Function; trigger : Function; };
     obj = {
       counter : 0,
@@ -43,7 +43,7 @@ describe('Backbone.Events', function(){
     };
     _.extend(obj, Backbone.Events);
 
-    obj.on('a b c', function(){
+    obj.on('a b c', () => {
       obj.counter += 1;
     });
 
@@ -62,7 +62,7 @@ describe('Backbone.Events', function(){
 
   });
 
-  it('can binding and triggering with event map', function(){
+  it('can binding and triggering with event map', () => {
     var obj : { counter : number; on : Function; off : Function; trigger : Function; };
     obj = {
       counter : 0,
@@ -100,7 +100,7 @@ describe('Backbone.Events', function(){
 
   });
 
-  it('fire `all` callback if triggered any events', function() {
+  it('fire `all` callback if triggered any events', () =>  {
     var obj : { counter : number; on : Function; off : Function; trigger : Function; };
     obj = {
       counter : 0,
