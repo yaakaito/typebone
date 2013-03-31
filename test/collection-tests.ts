@@ -34,4 +34,12 @@ describe('Backbone.Collection', () => {
     expect(collection.get(3)).to.equal(d);
     expect(collection.get(4)).to.equal(e);
   });
+
+  it('has raw models', () => {
+    expect(collection.models[0]).to.equal(a);
+    expect(collection.models[1]).to.equal(b);
+    expect(collection.models[2]).to.equal(c);
+    expect(collection.models[3]).to.equal(d);
+    expect(collection.models[4]).to.equal(e);
+  });
 });
