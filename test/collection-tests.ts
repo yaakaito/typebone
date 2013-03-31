@@ -24,10 +24,14 @@ describe('Backbone.Collection', () => {
     c = new TestModel('c');
     d = new TestModel('d');
     e = new TestModel('e');
-    collection = new TestModels([a, b, c, d]);
+    collection = new TestModels([a, b, c, d, e]);
   });
 
-  it('should get model', () => {
+  it('should get model with index', () => {
     expect(collection.get(0)).to.equal(a);
+    expect(collection.get(1)).to.equal(b);
+    expect(collection.get(2)).to.equal(c);
+    expect(collection.get(3)).to.equal(d);
+    expect(collection.get(4)).to.equal(e);
   });
 });
