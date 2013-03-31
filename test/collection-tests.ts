@@ -12,7 +12,7 @@ class TestModel extends Backbone.Model {
 }
 
 class TestModels extends Backbone.Collection {
-  model : Function = TestModel;
+  model = TestModel;
 }
 
 describe('Backbone.Collection', () => {

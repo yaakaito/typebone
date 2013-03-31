@@ -1,3 +1,5 @@
+/// <reference path="model.ts" />
+
 module Backbone {
   export class Collection {
     model : Function = null;
