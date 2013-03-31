@@ -47,6 +47,11 @@ describe('Backbone.Model', () => {
       expect(model.has('undef')).to.be.false;
     });
 
+    it('should can delete attribute by `unset`', () => {
+      model.unset('key');
+      expect(model.has('key')).to.be.false;  
+    });
+
     it('should be fire change event if attribute changed', () => {
       var changed = false;
       model.on('change', () => {
@@ -56,6 +61,14 @@ describe('Backbone.Model', () => {
       expect(changed).to.be.true;
     });
 
+    it('should be fire change event if unset attribute', () => {
+      var changed = false;
+      model.on('change', () => {
+        changed = true;
+      }).unset('key');
+      expect(changed).to.be.true;
+    });
+    
     it('should not be fire change event if attribute not changed', () => {
       var changed = false;
       model.on('change', () => {

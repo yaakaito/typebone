@@ -27,6 +27,10 @@ module Backbone {
       }
     }
 
+    unset(name : string) {
+      this.set(name, null);
+    }
+
     escape(name : string) {
       return _.escape(this.get(name));
     }
