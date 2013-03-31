@@ -78,5 +78,16 @@ describe('Backbone.Model', function(){
       expect(changed).to.be.false;
     });
 
+    it('should not be fire if setted silent', () => {
+      model.silent = true;
+      var changed = false;
+      model.on('change:key', () => {
+        changed = true;
+      }).on('change', () =>{
+        changed = true;
+      });
+      model.set('key', 'v');
+      expect(changed).to.be.false;
+    });
   });
 });

@@ -4,6 +4,7 @@ module Backbone {
   export class Model implements Eventable {
 
     private attributes : Object;
+    silent : bool = false;
 
     constructor(attributes? : Object) {
       var attributes = attributes || {};
@@ -18,9 +19,11 @@ module Backbone {
     set(name : string, value : any) {
       if (this.attributes[name] !== value) {
         this.attributes[name] = value;
-        var eventName = 'change:' + name;
-        this.trigger(eventName, this);
-        this.trigger('change', this);
+        if (this.silent == false) {
+          var eventName = 'change:' + name;
+          this.trigger(eventName, this);
+          this.trigger('change', this);          
+        }
       }
     }
 
