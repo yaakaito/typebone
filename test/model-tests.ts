@@ -106,6 +106,8 @@ describe('Backbone.Model', () => {
       });
       model.set('key', 'v');
       expect(changed).to.be.false;
+      model.unset('key');
+      expect(changed).to.be.false;
     });
   });
 });
