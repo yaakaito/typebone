@@ -27,6 +27,10 @@ module Backbone {
       }
     }
 
+    escape(name : string) {
+      return _.escape(this.get(name));
+    }
+
     has(name : string) : bool {
       return this.get(name) != null;
     }

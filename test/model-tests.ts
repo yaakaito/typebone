@@ -37,6 +37,11 @@ describe('Backbone.Model', () => {
       expect(model.get('key')).to.equal('rewrited');
     });
 
+    it('should `escape` returns HTML escaped value', () => {
+      model.set('xss', '<script>alert("xss!")</script>');
+      expect(model.escape('xss')).to.equal('&lt;script&gt;alert(&quot;xss!&quot;)&lt;&#x2F;script&gt;');
+    });
+
     it('should `has` retruns true if the property defined', () => {
       expect(model.has('key')).to.be.true;
       expect(model.has('undef')).to.be.false;
