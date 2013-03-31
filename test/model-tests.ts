@@ -39,6 +39,7 @@ describe('Backbone.Model', function(){
 
     it('should `has` retruns true if the property defined', function(){
       expect(model.has('key')).to.be.true;
+      expect(model.has('undef')).to.be.false;
     });
 
     it('should be fire change event if attribute changed', function(){
