@@ -2,3 +2,5 @@
 !vendor/*.js
 cover.html
 *.js.map
+components/
+node_modules/
